@@ -23,6 +23,13 @@ function renderContent(content) {
   return nodes
 }
 
+var colorMap = {
+  emerald: { text: 'text-emerald-400', bg: 'bg-emerald-500/15', border: 'border-emerald-500/30' },
+  purple: { text: 'text-purple-400', bg: 'bg-purple-500/15', border: 'border-purple-500/30' },
+  blue: { text: 'text-blue-400', bg: 'bg-blue-500/15', border: 'border-blue-500/30' },
+  orange: { text: 'text-orange-400', bg: 'bg-orange-500/15', border: 'border-orange-500/30' }
+}
+
 function BlogDetails(props) {
   var posts = props.data.posts
   var categories = props.data.categories
@@ -49,7 +56,15 @@ function BlogDetails(props) {
     )
   }
 
-  var style = getCategoryStyle(post.category, categories)
+  var found = null
+  for (var c = 0; c < categories.length; c++) {
+    if (categories[c].name === post.category) {
+      found = categories[c]
+      break
+    }
+  }
+  var colorKey = found ? found.color : 'orange'
+  var style = colorMap[colorKey] || colorMap.orange
 
   var relatedPosts = []
   for (var j = 0; j < posts.length; j++) {
